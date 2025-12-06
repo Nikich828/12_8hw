@@ -59,18 +59,18 @@
 
 Резервирование одной базы с помощью pg_dump:
 
-# Дамп базы 'mydb' в файл custom-формата (сжатый, поддерживает восстановление отдельных объектов)
+Дамп базы 'mydb' в файл custom-формата (сжатый, поддерживает восстановление отдельных объектов)
 pg_dump -Fc -U postgres -d mydb -f mydb_backup.dump
 
-# Дамп в SQL-формате
+Дамп в SQL-формате
 pg_dump -U postgres mydb > mydb_backup.sql
 
 Восстановление с помощью pg_restore:
 
-# Восстановление в новую базу данных
+Восстановление в новую базу данных
 pg_restore -U postgres -d newdb mydb_backup.dump
 
-# Восстановление только структуры
+Восстановление только структуры
 pg_restore --schema-only -U postgres -d newdb mydb_backup.dump
 
 
@@ -86,10 +86,15 @@ mysqlbackup --defaults-file=/home/dbadmin/my.cnf \
             backup-to-image
 
 Где:
+
 mysqlbackup — утилита для резервного копирования MySQL Enterprise Backup
+
 --defaults-file=/home/dbadmin/my.cnf — путь к файлу конфигурации MySQL с параметрами подключения
+
 --backup-dir=/home/dbadmin/full_backup — рабочая директория для временных файлов во время создания бэкапа
+
 --backup-image=full_backup.bi — имя выходного файла бэкапа в бинарном формате
+
 backup-to-image — команда создания бэкапа в виде единого сжатого файла (image)
 
 Затем делаем инкрементное резервное копирование:
@@ -106,16 +111,27 @@ mysqlbackup --defaults-file=/home/dbadmin/my.cnf \
             backup-to-image
 
 Где:
+
 mysqlbackup — утилита для резервного копирования MySQL Enterprise Backup
+
 --defaults-file=/home/dbadmin/my.cnf — путь к файлу конфигурации MySQL с параметрами подключения
+
 --user=backup_user — имя пользователя MySQL с правами для резервного копирования
+
 --password='secure_password' — пароль пользователя для подключения к MySQL
+
 --incremental — флаг создания инкрементного бэкапа (только измененные данные с последнего бэкапа)
+
 --incremental-base=history:last_backup — указывает использовать последний успешный бэкап из истории как базовый для инкрементального копирования
+
 --backup-dir=/home/dbadmin/temp_dir — временная рабочая директория для обработки данных во время создания бэкапа
+
 --backup-image=/backup/incremental_$(date +%Y%m%d_%H%M).bi — путь и имя выходного файла бэкапа с временной меткой в формате ГГГГММДД_ЧЧММ
+
 --compress — флаг сжатия данных бэкапа для экономии места
+
 --with-timestamp — добавляет временную метку в метаданные бэкапа для удобства идентификации
+
 backup-to-image — команда создания бэкапа в виде единого сжатого файла (image)
 
 mysqlbackup извлекает LSN последней успешной (не TTS) полной или частичной резервной копии из таблицы mysql.backup_history и выполняет инкрементное резервное копирование на основе этого.
